@@ -1,7 +1,7 @@
 const NODE_RADIUS = 40;
 const GRID_SIZE = 50;
 const LINE_CP_OFFSET = 100;
-const EDGE_OFFSET = Math.PI/6
+const EDGE_OFFSET = Math.PI/6;
 
 class Drawer {
     constructor(canvas) {
@@ -10,16 +10,19 @@ class Drawer {
     }
 
     clear() {
+        this.ctx.beginPath();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
     
     line(x1, y1, x2, y2) {
+        this.ctx.beginPath();
         this.ctx.moveTo(x1, y1);
         this.ctx.lineTo(x2, y2);
         this.ctx.stroke();
     }
     
     drawGrid() {
+        this.ctx.beginPath();
         this.ctx.strokeStyle = "rgb(235, 235, 235)";
         this.ctx.lineWidth = 1;
         
@@ -34,12 +37,13 @@ class Drawer {
     }
     
     drawNode(node) {
+        this.ctx.beginPath();
+        
         // Draw circle
         this.ctx.fillStyle = "white";
-        this.ctx.strokeStyle = "gray";
+        this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 2;
     
-        this.ctx.beginPath();
         this.ctx.arc(node.x, node.y, NODE_RADIUS, 0, 2 * Math.PI);
         this.ctx.stroke();
         this.ctx.fill();
@@ -85,10 +89,10 @@ class Drawer {
         }
     
         // Draw line
+        this.ctx.beginPath();
         this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 1;
     
-        this.ctx.beginPath();
         this.ctx.moveTo(x1, y1);
         this.ctx.quadraticCurveTo(cx, cy, x2, y2);
         this.ctx.stroke();

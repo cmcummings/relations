@@ -21,8 +21,9 @@ class Node {
     }
 
     relateTo(node) {
-        if (node in this.relations) return;
+        if (this.relations.includes(node)) return;
         this.relations.push(node);
+        console.log("Relation added: " + this.name + " --> " + node.name);
     }
 
     unrelate(node) {
