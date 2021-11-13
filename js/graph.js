@@ -19,12 +19,17 @@ function refresh() {
 
 refresh();
 
-function addNode(x, y) {
-    // Check if position is not too close to other nodes
+function collidesWithNode(x, y, ignoreNode) {
     for (let i = 0; i < nodes.length; i++) {
         let node = nodes[i];
-        if (node.intersectsWithPotentialNode(x, y)) return;
+        if (node != ignoreNode && node.intersectsWithPotentialNode(x, y)) return true;
     }
+    return false;
+}
+
+function addNode(x, y) {
+    // Check if position is not too close to other nodes
+    if (collidesWithNode(x, y)) return;
 
     // Create node
     nodes.push(new Node(x, y));
@@ -41,39 +46,54 @@ function getNodeAtPosition(x, y) {
 // Handle input
 
 var dragging = false;
-var connecting = false;
-var dragStart; 
+var draggingNode = false;
+var dragStart;
 var fromNode;
 
-function mouseDown(x, y) {
+function mouseDown(x, y, shift) {
     let targetNode = getNodeAtPosition(x, y);
     if (targetNode == null) { 
         addNode(x, y);
     } else {
         fromNode = targetNode;
+        if (shift) {
+            draggingNode = true;
+        }
     }
 }
 
 function mouseDragging(x, y) {
-    let targetNode = getNodeAtPosition(x, y);
-    if (fromNode != null && targetNode != fromNode) {
-        connecting = true;
-        refresh();
-        drawer.drawDirectedLine(fromNode.x, fromNode.y, x, y)
+    if (draggingNode) {
+        if (!collidesWithNode(x, y, fromNode)) {
+            fromNode.moveTo(x, y);
+            refresh();
+        }
+    } else {
+        let targetNode = getNodeAtPosition(x, y);
+        if (fromNode != null) {
+            refresh();
+            drawer.drawLineDashed(fromNode.x, fromNode.y, x, y)
+        }
     }
 }
 
 function mouseUp(x, y) {
-    if(fromNode) {
+    if(fromNode && !draggingNode) {
         let targetNode = getNodeAtPosition(x, y);
-        if (targetNode && targetNode != fromNode) { // TODO add self-loops
-            fromNode.relateTo(targetNode);
+        if (targetNode) { // TODO add self-loops
+            if(fromNode.isRelatedTo(targetNode)) {
+                fromNode.unrelate(targetNode);
+            } else {
+                fromNode.relateTo(targetNode);
+            }
+
             refresh();
         }
         
         refresh();
     }
 
+    draggingNode = false;
     fromNode = null;
 }
 
@@ -86,7 +106,7 @@ canvas.addEventListener("mousedown", mouse => {
     const y = mouse.clientY;
     dragStart = {x: x, y: y};
     dragging = true;
-    mouseDown(x, y);
+    mouseDown(x, y, mouse.shiftKey);
 })
 
 canvas.addEventListener("mousemove", mouse => {

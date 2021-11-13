@@ -20,6 +20,10 @@ class Node {
         this.relations = []; // Relations originating from this node
     }
 
+    isRelatedTo(node) {
+        return this.relations.includes(node);
+    }
+
     relateTo(node) {
         if (this.relations.includes(node)) return;
         this.relations.push(node);
@@ -27,7 +31,10 @@ class Node {
     }
 
     unrelate(node) {
-        this.relations.splice(this.relations.findIndex(n => n == node), 1);
+        let i = this.relations.findIndex(n => n == node)
+        if (i < 0) return;
+        this.relations.splice(i, 1);
+        console.log("Relation removed: " + this.name + " --> " + node.name);
     }
 
     moveTo(x, y) {
