@@ -1,3 +1,9 @@
+:root {
+    --sidebar-color-light: rgb(235, 235, 235);
+    --sidebar-color-mid: rgb(228, 228, 228);
+    --sidebar-color-dark: rgb(218, 218, 218);
+}
+
 body {
     margin: 0;
 }
@@ -21,10 +27,49 @@ h2 {
     overflow: hidden;
 }
 
-#matrix {
+#sidebar {
     flex-basis: 40%;
     flex-grow: 1;
-    background-color: rgb(235, 235, 235);
-    border-left: 1px solid rgb(218, 218, 218);
+    background-color: var(--sidebar-color-light);
+    border-left: 1px solid var(--sidebar-color-dark);
+}
+
+#sidebar-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--sidebar-color-dark);
+}
+
+#sidebar-tabs button {
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-right: 1px solid var(--sidebar-color-dark);
+}   
+
+#sidebar-tabs button:hover {
+    background-color: var(--sidebar-color-mid);
+}
+
+#sidebar-tabs button:active {
+    background-color: var(--sidebar-color-dark);
+}
+
+#sidebar-tabs button.active {
+    background-color: var(--sidebar-color-mid);
+}
+
+#sidebar-content {
     padding: 20px;
+}
+
+#sidebar-content div {
+    display: none;
+}
+
+span.true {
+    color: green;
+}
+
+span.false {
+    color: red;
 }

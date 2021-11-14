@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relations</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="images/node.png">
 </head>
 
 <body id="root">
@@ -16,8 +17,40 @@
             <script type="module" src="js/graph.js"></script>
         </div>
 
-        <div id="matrix">
+        <div id="sidebar">
+            <div id="sidebar-tabs">
+                <button onclick="openTab(event.currentTarget, 'help')">Help & About</button>
+                <button onclick="openTab(event.currentTarget, 'relation')" id="default-tab">Relation Info</button>
+            </div>
 
+            <div id="sidebar-content">
+                <div id="help">
+                    <h2>Controls</h2>
+                    <p><i>Use on a computer for the best experience.</i></p>
+                    <p>Click to add a node.</p>
+                    <p>Shift+Click to move a node.</p>
+                    <p>Click and drag from one node to another to add or remove the relation.</p>
+                    <p>Click a node to add or remove the self-relation.</p>
+
+                    <p>Save the graph with Right Click -> Save image as...</p>
+
+                    <h2>Upcoming features</h2>
+                    <ul>
+                        <li>Removing nodes.</li>
+                        <li>Detecting transitivity, symmetry, and antisymmetry.</li>
+                    </ul>
+                </div>
+
+                <div id="relation">
+                    <h2>Adjacency Matrix</h2>
+                    <table id="matrix-table"></table>
+
+                    <h2>Properties</h2>
+                    <p>The relation is <span class="true" id="prop-reflexive">reflexive</span>.</p>
+                </div>
+            </div>
+
+            <script src="js/tabs.js"></script>
         </div>
     </div>
 </body>

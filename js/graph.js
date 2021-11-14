@@ -1,5 +1,6 @@
 import Node from "./Node.js";
 import Drawer from "./Drawer.js";
+import AdjacencyMatrix from "./AdjacencyMatrix.js";
 
 const canvas = document.getElementById("graph-canvas");
 canvas.width = window.screen.width;
@@ -8,7 +9,41 @@ canvas.height = window.screen.height;
 const drawer = new Drawer(canvas);
 
 // State
-const nodes = [new Node(100, 100)];
+const nodes = [];
+const matrix = new AdjacencyMatrix();
+
+const matrixTable = document.getElementById("matrix-table");
+const relfexiveProp = document.getElementById("prop-reflexive")
+
+function updateMatrixTable() {
+    // Update table
+    let body = "";
+    let head = "<tr><td></td>";
+    
+    for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        head += "<td>" + node.name + "</td>";
+        body += "<tr>";
+        body += "<td>" + node.name + "</td>";
+        matrix.row(node.index).map(bool => body += "<td>" + bool + "</td>");
+        body += "</tr>";
+    }
+
+    head += "</tr>";
+
+    matrixTable.innerHTML = head + body;
+
+    // Update properties
+    if (matrix.reflexive) {
+        relfexiveProp.innerHTML = "reflexive";
+        relfexiveProp.className = "true";
+    } else {
+        relfexiveProp.innerHTML = "not reflexive";
+        relfexiveProp.className = "false";
+    }
+
+    
+}
 
 function refresh() {
     drawer.clear();
@@ -21,7 +56,7 @@ refresh();
 
 function collidesWithNode(x, y, ignoreNode) {
     for (let i = 0; i < nodes.length; i++) {
-        let node = nodes[i];
+        const node = nodes[i];
         if (node != ignoreNode && node.intersectsWithPotentialNode(x, y)) return true;
     }
     return false;
@@ -34,11 +69,14 @@ function addNode(x, y) {
     // Create node
     nodes.push(new Node(x, y));
     refresh();
+
+    matrix.add();
+    updateMatrixTable();
 }
 
 function getNodeAtPosition(x, y) {
     for (let i = 0; i < nodes.length; i++) {
-        let node = nodes[i];
+        const node = nodes[i];
         if (node.pointInNode(x, y)) return node;
     }
 }
@@ -69,7 +107,6 @@ function mouseDragging(x, y) {
             refresh();
         }
     } else {
-        let targetNode = getNodeAtPosition(x, y);
         if (fromNode != null) {
             refresh();
             drawer.drawLineDashed(fromNode.x, fromNode.y, x, y)
@@ -80,12 +117,16 @@ function mouseDragging(x, y) {
 function mouseUp(x, y) {
     if(fromNode && !draggingNode) {
         let targetNode = getNodeAtPosition(x, y);
-        if (targetNode) { // TODO add self-loops
+        if (targetNode != null) {
             if(fromNode.isRelatedTo(targetNode)) {
                 fromNode.unrelate(targetNode);
+                matrix.update(fromNode, targetNode, false);
             } else {
                 fromNode.relateTo(targetNode);
+                matrix.update(fromNode, targetNode, true);
             }
+
+            updateMatrixTable();
 
             refresh();
         }

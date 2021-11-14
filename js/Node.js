@@ -4,12 +4,15 @@ const NODE_RADIUS = 40;
 const availableNames = 'abcdefghijklmnopqrstuvwxyz'.split("").reverse();
 
 function nextName() {
-    return availableNames.pop()
+    return availableNames.pop();
 }
 
 function addAvailableName(name) {
-    availableNames.push(name)
+    availableNames.push(name);
 }
+
+const nameIndices = {};
+availableNames.map((name, i) => nameIndices[name] = availableNames.length - i - 1);
 
 // Node class
 class Node {
@@ -17,6 +20,7 @@ class Node {
         this.x = x;
         this.y = y;
         this.name = nextName();
+        this.index = nameIndices[this.name];
         this.relations = []; // Relations originating from this node
     }
 

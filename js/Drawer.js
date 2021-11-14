@@ -84,6 +84,7 @@ class Drawer {
 
             this.ctx.beginPath();
             this.ctx.lineWidth = 1;
+            this.ctx.strokeStyle = "black";
             this.ctx.arc(x, y, 2*NODE_RADIUS/3, 0, 2 * Math.PI);
             this.ctx.stroke();
         }
