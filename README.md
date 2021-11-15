@@ -5,5 +5,4 @@ Web app that can manipulate, visualize, and analyze relations. ([What are relati
 - Displays a relation as a graph and an adjacency matrix.
 - Detects reflexivity (symmetry, antisymmetry, transitivity TBA)
 
-### Usage
 Available on my [GitHub Pages website](https://cmcummings.github.io/relations/).
