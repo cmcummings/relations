@@ -66,6 +66,11 @@ h2 {
     display: none;
 }
 
+#matrix-table tbody tr td {
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 span.true {
     color: green;
 }

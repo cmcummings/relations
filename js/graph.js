@@ -14,6 +14,7 @@ const matrix = new AdjacencyMatrix();
 
 const matrixTable = document.getElementById("matrix-table");
 const relfexiveProp = document.getElementById("prop-reflexive")
+const symmetricProp = document.getElementById("prop-symmetric")
 
 function updateMatrixTable() {
     // Update table
@@ -42,7 +43,13 @@ function updateMatrixTable() {
         relfexiveProp.className = "false";
     }
 
-    
+    if (matrix.symmetric) {
+        symmetricProp.innerHTML = "symmetric";
+        symmetricProp.className = "true";
+    } else {
+        symmetricProp.innerHTML = "not symmetric";
+        symmetricProp.className = "false";
+    }
 }
 
 function refresh() {

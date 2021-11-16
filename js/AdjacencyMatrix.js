@@ -38,6 +38,23 @@ class AdjacencyMatrix {
         
         return true;
     }
+
+    get symmetric() {
+        if (this.numNodes == 1) return true;
+        for (let i = 0; i < this.matrix.length - 1; i++) {
+            for(let j = i + 1; j < this.matrix[i].length; j++) {
+                if (this.matrix[i][j] != this.matrix[j][i]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    get transitive() {
+        
+    }
 }
 
 export default AdjacencyMatrix
